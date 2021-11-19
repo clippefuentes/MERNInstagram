@@ -9,7 +9,7 @@ const Signup = () => {
                 <input type="text" placeholder="Name" />
                 <input type="email" placeholder="Email" />
                 <input type="password" placeholder="Password" />
-                <button className="btn waves-effect waves-light blue lighten-2" type="submit" name="action">
+                <button className="btn waves-effect waves-light blue darken-1" type="submit" name="action">
                     Sign Up
                 </button>
                 <h5>

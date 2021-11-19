@@ -8,7 +8,7 @@ const Login = () => {
                 <h2 className="brand-logo"> Clynestagram </h2>
                 <input type="email" placeholder="Email" />
                 <input type="password" placeholder="Password" />
-                <button className="btn waves-effect waves-light blue lighten-2" type="submit" name="action">
+                <button className="btn waves-effect waves-light blue darken-1" type="submit" name="action">
                     Login
                 </button>
                 <h5>
