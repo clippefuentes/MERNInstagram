@@ -25,7 +25,8 @@ const CreatePost = () => {
             const createPostRes = await fetch('/createPost', {
                 method: "post",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem('jwt')
                 },
                 body: JSON.stringify({
                     title, caption, url: newData.url
@@ -45,6 +46,10 @@ const CreatePost = () => {
                 navigate('/')
             }
         } catch (err) {
+            M.toast({
+                html: err.message,
+                classes: "red darker-3"
+            })
             console.error(err)
         }
     }

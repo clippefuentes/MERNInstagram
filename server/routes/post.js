@@ -14,22 +14,23 @@ router.get('/allpost', async (req, res) => {
     }
 })
 
-router.post('/createpost', requiredLogin, async (req, res) => {
+router.post('/createPost', requiredLogin, async (req, res) => {
     try {
-        const { title, body } = req.body
-        if (!title || !body) {
+        const { title, caption, url } = req.body
+        if (!title || !caption || !url) {
             return res.status(422).json({ error: "Please add all the fields" })
         }
         const currentUser = { ...req.user }
         delete currentUser.password
-        console.log(req.user)
         const post = new Post({
-            title, body, 
+            title, caption,
+            photo: url,
             postedBy: currentUser
         })
         const result = await post.save()
         return res.json({ post: result })
     } catch (err) {
+        console.log('err:', err)
         return res.json({ error: err })
     }
 })

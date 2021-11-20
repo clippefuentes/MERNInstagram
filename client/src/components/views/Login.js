@@ -34,6 +34,8 @@ const Login = () => {
                         classes: "red darker-3"
                     })
                 } else {
+                    localStorage.setItem('jwt', data.token)
+                    localStorage.setItem('user', JSON.stringify(data.user))
                     M.toast({
                         html: "Signed in",
                         classes: "green darken-1"

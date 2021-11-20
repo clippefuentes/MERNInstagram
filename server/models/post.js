@@ -6,13 +6,13 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    body: {
+    caption: {
         type: String,
         required: true
     },
     photo: {
         type: String,
-        default: 'No Photo'
+        required: true
     },
     postedBy: {
         type: ObjectId,
