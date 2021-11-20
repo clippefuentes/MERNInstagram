@@ -4,7 +4,7 @@ const Post = mongoose.model("Post")
 const router = express.Router()
 const requiredLogin = require('../middleware/requireLogin')
 
-router.get('/allpost', async (req, res) => {
+router.get('/allPosts', requiredLogin, async (req, res) => {
     try {
         const allPost = await Post.find()
             .populate("postedBy", "_id name")
@@ -35,7 +35,7 @@ router.post('/createPost', requiredLogin, async (req, res) => {
     }
 })
 
-router.get('/mypost', requiredLogin, async (req, res) => {
+router.get('/myPosts', requiredLogin, async (req, res) => {
     const userPosts = await Post
         .find({ postedBy: req.user._id })
         .populate("postedBy", "_id name")

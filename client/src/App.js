@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, createContext, useReducer, useContext } from 'react'
+import { useNavigate } from 'react-router';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import NavBar from './components/Navbar';
@@ -8,20 +9,48 @@ import Profile from './components/views/Profile';
 import Signup from './components/views/Signup';
 import CreatePost from './components/views/CreatePost';
 
+import { UserReducer, initialState } from './reducer/userReducer';
+
 import './App.css'
 
-function App() {
+export const UserContext = createContext()
+
+const Routing = () => {
+  const navigate = useNavigate()
+  const { dispatch } = useContext(UserContext)
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    if (user) {
+      dispatch({ type: "USER", payload: user })
+      // navigate('/')
+    } else {
+      navigate('/login')
+    }
+    console.log(user)
+  }, [])
+
   return (
-    <Router>
-      <NavBar />
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/newPost" element={<CreatePost />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route exact path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/newPost" element={<CreatePost />} />
+    </Routes>
+  )
+}
+
+function App() {
+  const [state, dispatch] = useReducer(UserReducer, initialState)
+  return (
+    <UserContext.Provider value={{state, dispatch}}>
+      <Router>
+        <NavBar />
+        <Routing />
+      </Router>
+    </UserContext.Provider>
+    
   );
 }
 

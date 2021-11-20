@@ -1,11 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import { UserContext } from '../../App'
 
 const Profile = () => {
+    const { state, dispatch } = useContext(UserContext )
+    const [posts, setPosts] = useState([])
+    useEffect(() => {
+        (async () => {
+            const res = await fetch('/myPosts', {
+                headers: {
+                    "Authorization": "Bearer " + localStorage.getItem('jwt')
+                }
+            })
+            const resJson = await res.json()
+            const myPosts = resJson.posts
+            console.log('myPosts:', myPosts)
+            setPosts(myPosts)
+        })()
+    }, [])
     return (
         <div
             style={{
-              maxWidth: "550px",
-              margin: "0px auto"  
+                maxWidth: "550px",
+                margin: "0px auto"
             }}
         >
             <div style={{
@@ -21,7 +37,7 @@ const Profile = () => {
                     />
                 </div>
                 <div>
-                    <h4> Lauren Tsai </h4>
+                    <h4> {state ? state.name : 'Loading' }  </h4>
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
@@ -34,12 +50,13 @@ const Profile = () => {
                 </div>
             </div>
             <div className="gallery">
-                <img className="item" src={`https://iv1.lisimg.com/image/23140998/740full-lauren-tsai.jpg`} />
-                <img className="item" src={`https://iv1.lisimg.com/image/23140998/740full-lauren-tsai.jpg`} />
-                <img className="item" src={`https://iv1.lisimg.com/image/23140998/740full-lauren-tsai.jpg`} />
-                <img className="item" src={`https://iv1.lisimg.com/image/23140998/740full-lauren-tsai.jpg`} />
-                <img className="item" src={`https://iv1.lisimg.com/image/23140998/740full-lauren-tsai.jpg`} />
-                <img className="item" src={`https://iv1.lisimg.com/image/23140998/740full-lauren-tsai.jpg`} />
+                {
+                    posts.map(p => {
+                        return (
+                            <img key={p._id} className="item" src={`${p.photo}`} />
+                        )
+                    })
+                }
             </div>
         </div>
     )
