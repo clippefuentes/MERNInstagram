@@ -12,38 +12,44 @@ const Signup = () => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         console.log(emailRegex.test(email))
         console.log(email)
-        if (!emailRegex.test(email)) {
-            M.toast({
-                html: "Input email properly",
-                classes: "red darker-3"
-            })
-        } else {
-            const res = await fetch('/signup', {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name, password, email
-                })
-            })
-            const data = await res.json()
-            if (data.error) {
+        try {
+            if (!emailRegex.test(email)) {
                 M.toast({
-                    html: data.error,
+                    html: "Input email properly",
                     classes: "red darker-3"
                 })
             } else {
-                M.toast({
-                    html: data.message,
-                    classes: "green darken-1"
+                const res = await fetch('/signup', {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        name, password, email
+                    })
                 })
-                navigate('/login')
+                const data = await res.json()
+                if (data.error) {
+                    M.toast({
+                        html: data.error,
+                        classes: "red darker-3"
+                    })
+                } else {
+                    M.toast({
+                        html: data.message,
+                        classes: "green darken-1"
+                    })
+                    navigate('/login')
+                }
+                console.log(data)
             }
-            console.log(data)
+        } catch(err) {
+            M.toast({ html: err.m})
         }
+        
       
     }
+
     return (
         <div className="my-card">
             <div className="card auth-card input-field">

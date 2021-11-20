@@ -51,7 +51,14 @@ router.post('/signin', async (req, res) => {
             const token = jwt.sign({ 
                 _id: savedUser._id
             }, JWT_SECRET)
-            return res.json({ message: "Successful Sign In", token })
+            const { _id, name, email } = savedUser
+            return res.json({
+                message: "Successful Sign In",
+                token,
+                user: {
+                    _id, name, email 
+                }
+            })
         }
     } catch (err) {
         return res.status(422).json({ error: err })
