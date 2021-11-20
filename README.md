@@ -1,3 +1,3 @@
 # MERNInstagram
 MERN Instagram practice
-  Using old promises (then)
+  Pics will be posted soon
