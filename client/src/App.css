@@ -48,3 +48,9 @@ a {
   max-width: 500px;
   height: max-content
 }
+
+#toast-container {
+  top: 30px!important;
+  right: 30px!important;
+  left: auto !important;
+}

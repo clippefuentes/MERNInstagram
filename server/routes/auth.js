@@ -27,7 +27,7 @@ router.post('/signup', async (req, res) => {
             email, name, password: hashedPassword
         })
         const newUser = await user.save()
-        return res.json({ message: "User Saved", user: newUser })
+        return res.json({ message: "User Sign up", user: newUser })
     } catch (err) {
         return res.status(422).json({ error: err })
     }
