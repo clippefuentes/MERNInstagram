@@ -43,7 +43,7 @@ const Login = () => {
                     M.toast({
                         html: "Signed in",
                         classes: "green darken-1"
-                    })  
+                    })
                     navigate('/')
                 }
                 console.log(data)
