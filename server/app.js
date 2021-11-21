@@ -11,6 +11,7 @@ const PORT = 5000
 app.use(express.json())
 app.use(require('./routes/auth'))
 app.use(require('./routes/post'))
+app.use(require('./routes/user'))
 
 mongoose.connect(MONGOURI, {
     useNewUrlParser: true,

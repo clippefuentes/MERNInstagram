@@ -8,6 +8,7 @@ router.get('/allPosts', requiredLogin, async (req, res) => {
     try {
         const allPost = await Post.find()
             .populate("postedBy", "_id name")
+            .populate("comments.postedBy", "_id name")
         return res.json({ posts: allPost })
     } catch (err) {
         return res.json({ error: err })
@@ -39,6 +40,7 @@ router.get('/myPosts', requiredLogin, async (req, res) => {
     const userPosts = await Post
         .find({ postedBy: req.user._id })
         .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
 
     return res.json({ posts: userPosts })
 })
@@ -77,6 +79,53 @@ router.put('/unlike', requiredLogin,  async (req, res) => {
             new: true
         }).exec()
         return res.json({ post: post })
+    } catch (err) {
+        console.log('err', err)
+        return res.json({ error: err })
+    } 
+})
+
+router.put('/comment', requiredLogin, async (req, res) => {
+    try {
+        const { postId, comment } = req.body
+        if (!postId || !comment) {
+            return res.status(422).json({ error: "Please add all the fields" })
+        }
+        const commentObj = {
+            comment, postedBy: req.user._id
+        }
+        const post = await Post.findByIdAndUpdate(postId, {
+            $push: {
+                comments: commentObj
+            }
+        }, {
+            new: true
+        })
+            .populate("comments.postedBy", "_id name")
+            .populate("postedBy", "_id name")
+            .exec()
+        return res.json({ post: post })
+    } catch (err) {
+        console.log('err', err)
+        return res.json({ error: err })
+    } 
+})
+
+router.delete('/deletePost/:postId', requiredLogin, async (req, res) => {
+    try {
+        const { postId } = req.params
+        if (!postId) {
+            return res.status(422).json({ error: "Please add all the fields" })
+        }
+        const post = await Post.findOne({ _id: postId}).populate("postedBy", "_id name").exec()
+        if (!post) {
+            return res.status(422).json({ error: 'Post not existing' })
+        } else {
+            if (post.postedBy._id.toString() === req.user._id.toString()) {
+                const removedPost = await post.remove()
+                return res.json({ message: "Post deleted", removedPost })
+            }
+        }
     } catch (err) {
         console.log('err', err)
         return res.json({ error: err })
