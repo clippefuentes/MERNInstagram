@@ -9,6 +9,7 @@ import Profile from './components/views/Profile';
 import Signup from './components/views/Signup';
 import CreatePost from './components/views/CreatePost';
 import UserProfile from './components/views/UserProfile';
+import SubscribeUserPost from './components/views/SubscribeUserPost';
 
 import { UserReducer, initialState } from './reducer/userReducer';
 
@@ -39,6 +40,7 @@ const Routing = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/newPost" element={<CreatePost />} />
       <Route path="/profile/:id" element={<UserProfile />} />
+      <Route path="/followersPost" element={<SubscribeUserPost />} />
     </Routes>
   )
 }

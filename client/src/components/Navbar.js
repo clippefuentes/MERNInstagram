@@ -11,6 +11,7 @@ const NavBar = () => {
             return [
                 <li key="profile"><Link to="/profile">Profile</Link></li>,
                 <li key="/newPost"><Link to="/newPost">Create Post</Link></li>,
+                <li key="/followersPost"><Link to="/followersPost">My Followers Post</Link></li>,
                 <li key="/logout">
                     <button
                         className="btn waves-effect waves-light red darken-3" type="submit" name="action"

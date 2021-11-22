@@ -3,13 +3,13 @@ import { UserContext } from '../../App'
 import { Link } from 'react-router-dom'
 import M from 'materialize-css'
 
-const Home = () => {
+const SubscribeUserPost = () => {
     const { state, dispatch } = useContext(UserContext)
     const [data, setData] = useState([])
 
     useEffect(() => {
         (async () => {
-            const res = await fetch('/allPosts', {
+            const res = await fetch('/getUserPosts', {
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem('jwt')
                 }
@@ -122,11 +122,9 @@ const Home = () => {
                 data.map((item) => {
                     return (
                         <div key={item._id} className="card home-card">
-                            <h5
-                                style={{
+                            <h5 style={{
                                     padding: '5px'
-                                }}
-                            ><Link
+                                }}><Link
                                 to={item.postedBy._id !== state._id ? `/profile/${item.postedBy._id}` : `/profile`}
                             >{item.postedBy.name}</Link>{item.postedBy._id === state._id ? (
                                 <i className="material-icons"
@@ -183,4 +181,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default SubscribeUserPost

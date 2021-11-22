@@ -15,6 +15,21 @@ router.get('/allPosts', requiredLogin, async (req, res) => {
     }
 })
 
+router.get('/getUserPosts', requiredLogin, async (req, res) => {
+    try {
+        const userPosts = await Post.find({
+            postedBy: {
+                $in: req.user.following
+            }
+        })
+            .populate("postedBy", "_id name")
+            .populate("comments.postedBy", "_id name")
+        return res.json({ posts: userPosts })
+    } catch (err) {
+        return res.json({ error: err })
+    }
+})
+
 router.post('/createPost', requiredLogin, async (req, res) => {
     try {
         const { title, caption, url } = req.body
@@ -57,7 +72,10 @@ router.put('/like', requiredLogin,  async (req, res) => {
             }
         }, {
             new: true
-        }).exec()
+        })
+            .populate("comments.postedBy", "_id name")
+            .populate("postedBy", "_id name")
+            .exec()
         return res.json({ post: post })
     } catch (err) {
         console.log('err', err)
@@ -77,7 +95,10 @@ router.put('/unlike', requiredLogin,  async (req, res) => {
             }
         }, {
             new: true
-        }).exec()
+        })
+        .populate("comments.postedBy", "_id name")
+        .populate("postedBy", "_id name")
+        .exec()
         return res.json({ post: post })
     } catch (err) {
         console.log('err', err)

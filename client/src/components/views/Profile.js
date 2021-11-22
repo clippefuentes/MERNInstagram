@@ -2,8 +2,9 @@ import React, { useEffect, useState, useContext } from 'react'
 import { UserContext } from '../../App'
 
 const Profile = () => {
-    const { state, dispatch } = useContext(UserContext )
+    const { state, dispatch } = useContext(UserContext)
     const [posts, setPosts] = useState([])
+    
     useEffect(() => {
         (async () => {
             const res = await fetch('/myPosts', {
@@ -13,10 +14,10 @@ const Profile = () => {
             })
             const resJson = await res.json()
             const myPosts = resJson.posts
-            console.log('myPosts:', myPosts)
             setPosts(myPosts)
         })()
     }, [])
+
     return (
         <div
             style={{
@@ -38,14 +39,15 @@ const Profile = () => {
                 </div>
                 <div>
                     <h4> {state ? state.name : 'Loading' }  </h4>
+                    <h5> {state ? state.email : 'Loading'}  </h5>
                     <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
                         width: '108%'
                     }}>
-                        <h6>18 post</h6>
-                        <h6>40k followers</h6>
-                        <h6>100 following</h6>
+                        <h6>{posts.length} post</h6>
+                        <h6>{state && state.followers && state.followers.length || 0} followers</h6>
+                        <h6>{state && state.following && state.following.length || 0} following</h6>
                     </div>
                 </div>
             </div>

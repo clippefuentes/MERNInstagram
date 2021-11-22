@@ -19,4 +19,42 @@ router.get('/user/:id', requiredLogin, async (req, res) => {
     }
 })
 
+router.put('/follow', requiredLogin, async (req, res) => {
+    try {
+        const { followId } = req.body
+        const followedUser = await User.findByIdAndUpdate(followId, {
+            $push: {
+                followers: req.user._id
+            }
+        }, { new: true }).select("-password")
+        const currentUser = await User.findByIdAndUpdate(req.user._id, {
+            $push: {
+                following: followId
+            }
+        }, { new: true }).select("-password")
+        return res.json({ followedUser, currentUser })
+    } catch(err) {
+        return res.json({ error: err })
+    }
+})
+
+router.put('/unfollow', requiredLogin, async (req, res) => {
+    try {
+        const { followId } = req.body
+        const unfollowedUser = await User.findByIdAndUpdate(followId, {
+            $pull: {
+                followers: req.user._id
+            }
+        }, { new: true }).select("-password")
+        const currentUser = await User.findByIdAndUpdate(req.user._id, {
+            $pull: {
+                following: followId
+            }
+        }, { new: true }).select("-password")
+        return res.json({ unfollowedUser, currentUser })
+    } catch(err) {
+        return res.json({ error: err })
+    }
+})
+
 module.exports = router
