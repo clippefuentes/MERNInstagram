@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken")
 const requireLogin = require('../middleware/requireLogin')
 const router = express.Router()
 const User = mongoose.model("User")
-const { JWT_SECRET } = require('../keys')
+const { JWT_SECRET } = require('../config/keys')
 
 router.get('/protected', requireLogin, (req, res) => {
     res.send("Hello User")
