@@ -57,4 +57,18 @@ router.put('/unfollow', requiredLogin, async (req, res) => {
     }
 })
 
+router.put('/updatePic', requiredLogin, async (req, res) => {
+    try {
+        const { url } = req.body
+        const currentUser = await User.findByIdAndUpdate(req.user._id, {
+            $set: {
+                url
+            }
+        }, { new: true }).select("-password")
+        return res.json({ currentUser })
+    } catch(err) {
+        return res.json({ error: err })
+    }
+})
+
 module.exports = router

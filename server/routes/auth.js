@@ -12,7 +12,7 @@ router.get('/protected', requireLogin, (req, res) => {
 })
 
 router.post('/signup', async (req, res) => {
-    const { name, email, password } = req.body
+    const { name, email, password, url } = req.body
     if (!email || !password || !name) {
         return res.status(422).json({ error: "Please add all the fields" })
     }
@@ -24,7 +24,7 @@ router.post('/signup', async (req, res) => {
         }
         const hashedPassword = await bcrypt.hash(password, 12)
         const user = new User({
-            email, name, password: hashedPassword
+            email, name, password: hashedPassword, url
         })
         const newUser = await user.save()
         return res.json({ message: "User Sign up", user: newUser })
@@ -51,16 +51,18 @@ router.post('/signin', async (req, res) => {
             const token = jwt.sign({ 
                 _id: savedUser._id
             }, JWT_SECRET)
-            const { _id, name, email, followers, following } = savedUser
+            const { _id, name, email, followers, following, url } = savedUser
+            console.log(savedUser)
             return res.json({
                 message: "Successful Sign In",
                 token,
                 user: {
-                    _id, name, email, followers, following
+                    _id, name, email, followers, following, url
                 }
             })
         }
     } catch (err) {
+        console.log(err)
         return res.status(422).json({ error: err })
     }
 })

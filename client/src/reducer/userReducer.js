@@ -13,6 +13,11 @@ export const UserReducer = (state, action) => {
                 followers: action.payload.followers,
                 following: action.payload.following
             };
+        case 'UPDATE_PROFILE':
+            return {
+                ...state,
+                url: action.payload
+            };
         default:
             return state;
     }

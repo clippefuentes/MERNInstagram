@@ -105,7 +105,7 @@ const UserProfile = () => {
                             <div>
                                 <img
                                     style={{ width: "160px", height: "160px", borderRadius: "80px" }}
-                                    src={`https://iv1.lisimg.com/image/23157589/740full-lauren-tsai.jpg`}
+                                    src={userProfile.url}
                                 />
                             </div>
                             <div>

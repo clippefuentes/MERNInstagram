@@ -63,19 +63,20 @@ const CreatePost = () => {
                 textAlign: "center"
             }}
         >
-            <input type="text" placeholder="Title" onChange={(e) => { setTitle(e.target.value)}} />
-            <input type="text" placeholder="Caption" onChange={(e) => { setCaption(e.target.value)}} /><div className="file-field input-field">
+            <input type="text" placeholder="Title" onChange={(e) => { setTitle(e.target.value) }} />
+            <input type="text" placeholder="Caption" onChange={(e) => { setCaption(e.target.value) }} />
+            <div className="file-field input-field">
                 <div className="btn">
                     <span>Upload Image</span>
-                    <input type="file"  onChange={(e) => { console.log('e.target.files:', e.target.files);setImage(e.target.files[0])}}/>
+                    <input type="file" onChange={(e) => { console.log('e.target.files:', e.target.files); setImage(e.target.files[0]) }} />
                 </div>
                 <div className="file-path-wrapper">
-                    <input 
-                        className="file-path validate" type="text"  
+                    <input
+                        className="file-path validate" type="text"
                     />
                 </div>
             </div>
-            <button 
+            <button
                 className="btn waves-effect waves-light blue darken-1" type="submit" name="action"
                 onClick={PostData}
             >
