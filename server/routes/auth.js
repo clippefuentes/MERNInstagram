@@ -8,7 +8,7 @@ const sgMail = require('@sendgrid/mail')
 const requireLogin = require('../middleware/requireLogin')
 const router = express.Router()
 const User = mongoose.model("User")
-const { JWT_SECRET, SENDGRID_API } = require('../config/keys')
+const { JWT_SECRET, SENDGRID_API, SENDGRID_FROM_EMAIL } = require('../config/keys')
 
 sgMail.setApiKey(SENDGRID_API)
 
@@ -34,7 +34,7 @@ router.post('/signup', async (req, res) => {
         const newUser = await user.save()
         await sgMail.send({
             to: newUser.email,
-            from: 'noreplyclyne.sendgrid@gmail.com',
+            from: SENDGRID_FROM_EMAIL,
             subject: "Sign Up Success",
             html: `<h1> Welcome to Clynestagram </h1>`
         })
@@ -92,7 +92,7 @@ router.post('/resetPassword', async (req, res) => {
         const currentUser = await user.save()
         await sgMail.send({
             to: currentUser.email,
-            from: 'noreplyclyne.sendgrid@gmail.com',
+            from: SENDGRID_FROM_EMAIL,
             subject: "Password Reset",
             html: `
                 <p>You requested for password reset</p>
