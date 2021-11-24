@@ -19,7 +19,9 @@ const userSchema = new mongoose.Schema({
         default: 'https://res.cloudinary.com/clippefuentes/image/upload/v1637638686/MERNinstagram/default.jpg'
     },
     followers: [{ type: ObjectId, ref: "User" }],
-    following: [{ type: ObjectId, ref: "User" }]
+    following: [{ type: ObjectId, ref: "User" }],
+    resetToken: String,
+    expireToken: Date
 })
 
 mongoose.model("User", userSchema)

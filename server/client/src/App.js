@@ -1,5 +1,5 @@
 import React, { useEffect, createContext, useReducer, useContext } from 'react'
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 import NavBar from './components/Navbar';
@@ -10,6 +10,8 @@ import Signup from './components/views/Signup';
 import CreatePost from './components/views/CreatePost';
 import UserProfile from './components/views/UserProfile';
 import SubscribeUserPost from './components/views/SubscribeUserPost';
+import Reset from './components/views/Reset';
+import NewPassword from './components/views/NewPassword';
 
 import { UserReducer, initialState } from './reducer/userReducer';
 
@@ -19,15 +21,19 @@ export const UserContext = createContext()
 
 const Routing = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const { dispatch } = useContext(UserContext)
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'))
+    console.log('location:', location)
     if (user) {
       dispatch({ type: "USER", payload: user })
       // navigate('/')
     } else {
-      navigate('/login')
+      if (!location.pathname.startsWith('/reset')) {
+        navigate('/login') 
+      }
     }
     console.log(user)
   }, [])
@@ -41,6 +47,8 @@ const Routing = () => {
       <Route path="/newPost" element={<CreatePost />} />
       <Route path="/profile/:id" element={<UserProfile />} />
       <Route path="/followersPost" element={<SubscribeUserPost />} />
+      <Route exact path="/reset" element={<Reset />} />
+      <Route path="/reset/:token" element={<NewPassword />} />
     </Routes>
   )
 }

@@ -1,16 +1,13 @@
-import React, { useState, useContext } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import M from 'materialize-css'
 
-import { UserContext } from '../../App'
 
-const Login = () => {
-    const { state, dispatch } = useContext(UserContext)
+const Reset = () => {
     const navigate = useNavigate()
-    const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
 
-    const login = async () => {
+    const reset = async () => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         console.log(emailRegex.test(email))
         console.log(email)
@@ -21,13 +18,13 @@ const Login = () => {
                     classes: "red darker-3"
                 })
             } else {
-                const res = await fetch('/signin', {
+                const res = await fetch('/resetPassword', {
                     method: "post",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        password, email
+                        email
                     })
                 })
                 const data = await res.json()
@@ -37,14 +34,12 @@ const Login = () => {
                         classes: "red darker-3"
                     })
                 } else {
-                    localStorage.setItem('jwt', data.token)
-                    localStorage.setItem('user', JSON.stringify(data.user))
-                    dispatch({ type: "USER", payload: data.user})
+                
                     M.toast({
-                        html: "Signed in",
+                        html: "User Password Reset",
                         classes: "green darken-1"
                     })
-                    navigate('/')
+                    navigate('/login')
                 }
                 console.log(data)
             }
@@ -59,19 +54,12 @@ const Login = () => {
                 <h2 className="brand-logo"> Clynestagram </h2>
                 <input type="email" placeholder="Email" value={email}
                     onChange={(e) => { setEmail(e.target.value)}}/>
-                <input type="password" placeholder="Password" value={password} onChange={(e) => { setPassword(e.target.value)}}/>
-                <button className="btn waves-effect waves-light blue darken-1" type="submit" name="action" onClick={login}>
-                    Login
+                <button className="btn waves-effect waves-light blue darken-1" type="submit" name="action" onClick={reset}>
+                    Reset Password
                 </button>
-                <h5>
-                    <Link to="/signup">Want to create an account?</Link>
-                </h5>
-                <h6>
-                    <Link to="/reset">Reset Password?</Link>
-                </h6>
             </div>
         </div>
     )
 }
 
-export default Login
+export default Reset

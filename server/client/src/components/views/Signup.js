@@ -73,7 +73,7 @@ const Signup = () => {
                 console.log(data)
             }
         } catch (err) {
-            M.toast({ html: err.m })
+            M.toast({ html: err.message })
         }
 
 
