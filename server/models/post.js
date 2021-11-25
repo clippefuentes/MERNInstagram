@@ -23,6 +23,8 @@ const postSchema = new mongoose.Schema({
         comment: String,
         postedBy: { type: ObjectId, ref: "User"}
     }]
+}, {
+    timestamps: true
 })
 
 mongoose.model("Post", postSchema)

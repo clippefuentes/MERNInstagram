@@ -9,6 +9,7 @@ router.get('/allPosts', requiredLogin, async (req, res) => {
         const allPost = await Post.find()
             .populate("postedBy", "_id name")
             .populate("comments.postedBy", "_id name")
+            .sort('-createdAt')
         return res.json({ posts: allPost })
     } catch (err) {
         return res.json({ error: err })
@@ -24,6 +25,7 @@ router.get('/getUserPosts', requiredLogin, async (req, res) => {
         })
             .populate("postedBy", "_id name")
             .populate("comments.postedBy", "_id name")
+            .sort('-createdAt')
         return res.json({ posts: userPosts })
     } catch (err) {
         return res.json({ error: err })

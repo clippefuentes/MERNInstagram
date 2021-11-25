@@ -14,7 +14,7 @@ router.get('/user/:id', requiredLogin, async (req, res) => {
             .populate("postedBy", "_id name")
             .exec()
         return res.json({ user, posts })
-    } catch(err) {
+    } catch (err) {
         return res.json({ error: err })
     }
 })
@@ -33,7 +33,7 @@ router.put('/follow', requiredLogin, async (req, res) => {
             }
         }, { new: true }).select("-password")
         return res.json({ followedUser, currentUser })
-    } catch(err) {
+    } catch (err) {
         return res.json({ error: err })
     }
 })
@@ -52,7 +52,7 @@ router.put('/unfollow', requiredLogin, async (req, res) => {
             }
         }, { new: true }).select("-password")
         return res.json({ unfollowedUser, currentUser })
-    } catch(err) {
+    } catch (err) {
         return res.json({ error: err })
     }
 })
@@ -66,7 +66,22 @@ router.put('/updatePic', requiredLogin, async (req, res) => {
             }
         }, { new: true }).select("-password")
         return res.json({ currentUser })
-    } catch(err) {
+    } catch (err) {
+        return res.json({ error: err })
+    }
+})
+
+router.post('/search', requiredLogin, async (req, res) => {
+    try {
+        const { query } = req.body
+        let userPattern = new RegExp(`^${query}`)
+        const users = await User.find({
+            email: {
+                $regex: userPattern
+            }
+        }).select("_id email")
+        return res.json({ users })
+    } catch (err) {
         return res.json({ error: err })
     }
 })

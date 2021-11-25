@@ -58,12 +58,7 @@ const Profile = () => {
     }
 
     return (
-        <div
-            style={{
-                display: "flex",
-                justifyContent: "space-around",
-            }}
-        >
+        <div>
             <div style={{
                 margin: "18px 0px",
                 borderBottom: '1px solid grey'
